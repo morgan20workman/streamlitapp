@@ -17,3 +17,9 @@ st.dataframe(df_kart.style
 st.line_chart(df_kart,x='Body',y=['Weight','Acceleration','On-Road traction','Mini-Turbo','Ground Speed','Ground Handling'])
 
 st.bar_chart(df_kart, x='Body', y='Acceleration', width=0, height=0, use_container_width=True)
+
+chosen_kart = st.selectbox('Pick a Kart', df_kart['Body'])
+df_single_kart = df_kart.loc[df_kart['Body'] == chosen_kart]
+df_single_kart = df_single_kart.drop(columns=['Body'])
+df_unp_kart = df_single_kart.unstack().rename_axis(['category','row number']).reset_index().drop(columns='row number').rename({0:'strength'}, axis=1)
+st.bar_chart(df_unp_kart, x='category', y='strength')
